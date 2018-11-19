@@ -1,0 +1,27 @@
+{% extends '../general/base.html' %}
+
+{% block title %}Exam Home{% endblock %}
+
+{% block content %}
+<!-- 
+<p><a href="/exam/{{ subject.id }}/">{{ subject.name }}</a> {{ subject.code }}</p>
+ -->
+<table id="customers">
+  <tr>
+    <th>S/N</th>
+    <th>Subjects</th>
+    <th>Categories</th>
+    <th>Sub-Codes</th>
+  </tr>
+  {% for subject in subjects %}
+  <tr>
+    <td>{{ forloop.counter }}.</td>
+    <td><a href="/exam/{{ subject.id }}/">{{ subject.name }}</a></td>
+    <td>{{ subject.category_id }}</td>
+    <td>{{ subject.code }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+
+{% endblock %}

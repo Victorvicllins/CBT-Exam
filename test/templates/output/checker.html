@@ -1,0 +1,21 @@
+{% extends '../general/base.html' %}
+
+{% block title %}Exam Home{% endblock %}
+
+{% block content %}
+<div>
+  {{ queryset }}
+
+  {% for query in queryset %}
+    <p>{{ query.exam_subject }}</p>
+   <p> {{ query.user_key }}</p>
+    <p>{{ query.attempt }}</p>
+   <p> {{ query.score }}</p>
+   <p>{{ query.remark }}</p>
+
+  {% endfor %}
+
+</div>
+
+
+{% endblock %}

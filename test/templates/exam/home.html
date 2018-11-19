@@ -1,0 +1,148 @@
+{% extends '../general/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+	<div class="container">
+		<!-- for jinja use logic to change this div below to the one having a style of none -->
+		<!-- <h3>{{ questions|length }}</h3> -->
+		{% if questions %}
+		{% for question in questions %}
+
+
+		{% if forloop.counter == 1%}
+		<div class="jumbotron mt-3 pt-4 question" id="question-1">
+		{% else %}
+		<div class="jumbotron mt-3 pt-4 question" id="question-1" style="display: none;">
+		{% endif %}
+			<div>
+				<p class="text-center alert alert-dark d-question">
+					<b><u>Question {{ forloop.counter }}</u></b>
+					<p style="text-align: left;"><em>{{ question.subject_id }}</em></p>
+				</p>
+				<p style="display: none" id="id_val">{{question.subject_id.id}}</p>
+
+				<p>
+					{{ question.question }}
+				<!-- 	<h3>{{ question.count }}</h3>
+					<h3>{{ question|length }}</h3> -->
+				</p>
+			</div>
+			<hr>
+			<div>
+			<div class="row">
+		
+				<!-- pass in the index counter into the onclick function where we have a reoccurence of a value -->
+				<div class="col-md-5 mb-1 p-0">option A:
+					<div class="text-center border-warning alert options" onclick="options('options', '{{question.id}}', 'A', '{{forloop.counter}}', 0)">
+						{{ question.option_a }}
+					</div>
+				</div>
+				<div class="col-md-2"></div>
+				<div class="col-md-5 mb-1 p-0">option B:
+					<div class="text-center border-warning alert options" onclick="options('options', '{{question.id}}', 'B', '{{forloop.counter}}', 1)">
+						{{ question.option_b }}
+					</div>
+				</div>
+				<div class="col-md-5 mb-1 p-0">option C:
+					<div class="text-center border-warning alert options" onclick="options('options', '{{question.id}}', 'C', '{{forloop.counter}}', 2)">
+						{{ question.option_c }}
+					</div>
+				</div>
+				<div class="col-md-2"></div>
+				<div class="col-md-5 mb-1 p-0">option D:
+					<div class="text-center border-warning alert options" onclick="options('options', '{{question.id}}', 'D', '{{forloop.counter}}', 3)">
+						{{ question.option_d }}
+					</div>
+				</div>
+			</div>
+				
+			</div>
+			<hr>
+			<div class="row">
+				<div class="col-md-4 text-center btn btn-dark navigators" onclick="pagination('previous', 0)">previous</div>
+				<div class="col-md-4 text-center"><p class="pt-2">page {{ forloop.counter }} of {{total_quest}}</p></div>
+				<div class="col-md-4 text-center btn btn-dark navigators" onclick="pagination('next', 0)">next</div>
+			</div>
+			<hr>
+			<div class="text-center navigators_box">
+				<div class="btn-group">
+				</div>
+			</div>
+			<div class="text-center mt-3 submit-question" style="display: none;">
+				<div>
+					<button class="btn btn-success w-75" data-toggle="modal" data-target=".logout">Click to Submit</button>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+		{% else %}
+		<h4>Welcome to Exam page.</h4>
+		<p>No question available for the selected subject, contact <a href="#">instructor</a>.?</p>
+		{% endif %}
+	</div>
+
+
+	<div class="modal fade bd-example-modal-lg logout" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content padding-50 modal-logout text-center">
+            <p>
+              Are you sure you want to <span style="color: lightgreen"><span class="fa fa-sign-out"></span>Submit?</span>
+            </p>
+            <div class="row">
+              <a href="javascript:void(0)" class="btn btn-success col-md-5" id="submit">Yes</a>
+              <span class="col-md-2"></span>
+              <button class="btn btn-warning col-md-5" data-dismiss="modal" aria-label="Close">No</button>
+            </div>
+        </div>
+      </div>
+    </div>
+
+	<script type="text/javascript" src="{% static 'js/scripts.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/jquery-3.2.1.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+		   $("#submit").click(function(){
+		   	console.log(option_selected)
+		   	option_selected = {"options" : option_selected};
+		   	$.ajaxSetup({
+		   	     beforeSend: function(xhr, settings) {
+		   	         function getCookie(name) {
+		   	             var cookieValue = null;
+		   	             if (document.cookie && document.cookie != '') {
+		   	                 var cookies = document.cookie.split(';');
+		   	                 for (var i = 0; i < cookies.length; i++) {
+		   	                     var cookie = jQuery.trim(cookies[i]);
+		   	                     // Does this cookie string begin with the name we want?
+		   	                     if (cookie.substring(0, name.length + 1) == (name + '=')) {
+		   	                         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+		   	                         break;
+		   	                     }
+		   	                 }
+		   	             }
+		   	             return cookieValue;
+		   	         }
+		   	         if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+		   	             // Only send the token to relative URLs i.e. locally.
+		   	             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+		   	         }
+		   	     }
+		   	});
+		     $.ajax({
+		       type : "POST",
+		       csrfmiddlewaretoken: "{{ csrf_token }}",
+		       url : `/exam/${id_sub}/`,
+		       data : option_selected,
+		       success: function(){
+		           alert("successfully submitted, you can now logout");
+		         },
+		       error: function(XMLHttpRequest, textStatus, errorThrown) {
+		         alert("some error " + String(errorThrown) + String(textStatus) + String(XMLHttpRequest.responseText));
+		         }
+		       });
+		 	});
+		});
+	</script>
+
+{% endblock %}

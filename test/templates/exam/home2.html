@@ -1,0 +1,397 @@
+{% extends '../general/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Exam Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+	<p>Student Name: <strong> {{ user.username }}</strong></p>
+	
+	<div class="container">
+		{% for question in questions %}
+		<div class="jumbotron mt-3 pt-4 question" id="question-1">
+			<div>
+				<p class="text-center alert alert-dark d-question">
+					<b><u>Question {{ forloop.counter }}</u></b>
+				</p>
+				<p> {{ question.question }}</p>
+			</div>
+			<hr>
+			<div>
+			<div class="row">
+				<div class="col-md-5 mb-1 p-0">option A:
+					<div class="text-center border-warning alert options" id="opt_A" onclick="options('opt_A', '{{question.id}}', 'A', 0)">
+						{{ question.option_a }}
+					</div>
+				</div>
+				<div class="col-md-2"></div>
+				<div class="col-md-5 mb-1 p-0">option B:
+					<div class="text-center border-warning alert options" id="opt_B" onclick="options('opt_B', 'Q_No_1', 'B',)">
+						{{ question.option_b }}
+					</div>
+				</div>
+				<div class="col-md-5 mb-1 p-0">option C:
+					<div class="text-center border-warning alert options" id="opt_C" onclick="options('opt_C', 'Q_No_1', 'C', 0)">
+						{{ question.option_c }}
+					</div>
+				</div>
+				<div class="col-md-2"></div>
+				<div class="col-md-5 mb-1 p-0">option D:
+					<div class="text-center border-warning alert options" id="opt_D" onclick="options('opt_D', 'Q_No_1', 'D', 0)">
+						{{ question.option_d }}
+					</div>
+				</div>
+			</div>
+				
+			</div>
+			<hr>
+			<div class="row">
+				<div class="col-md-4 text-center btn btn-dark navigators" onclick="pagination('previous', 0)">previous</div>
+				<div class="col-md-4 text-center"><p class="pt-2">page 1 of 5</p></div>
+				<div class="col-md-4 text-center btn btn-dark navigators" onclick="pagination('next', 0)">next</div>
+			</div>
+			<hr>
+			<div class="text-center">
+				<div class="btn-group">
+					<div class="btn btn-warning active" onclick="quick_jump(1)">1</div>
+					<div class="btn btn-warning" onclick="quick_jump(2)">2</div>
+					<div class="btn btn-warning" onclick="quick_jump(3)">3</div>
+					<div class="btn btn-warning" onclick="quick_jump(4)">4</div>
+					<div class="btn btn-warning" onclick="quick_jump(5)">5</div>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	<!--	<div class="jumbotron mt-3 pt-4 question" id="question-2" style="display: none">
+			<div>
+				<p class="text-center alert alert-dark d-question">
+					<b><u>Question No.2</u></b>
+				</p>
+				<p>
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				</p>
+			</div>
+			<hr>
+			<div>
+			<div class="row">
+				<div class="col-md-5 mb-1 p-0">option A:
+					<div class="text-center border-warning alert options" id="opt_A_2" onclick="options('opt_A_2', 'Q_No_2', 'A', 1)">
+						blah blah blah
+					</div>
+				</div>
+				<div class="col-md-2"></div>
+				<div class="col-md-5 mb-1 p-0">option B:
+					<div class="text-center border-warning alert options" id="opt_B_2" onclick="options('opt_B_2', 'Q_No_2', 'B', 1)">
+						blah blah blah
+					</div>
+				</div>
+				<div class="col-md-5 mb-1 p-0">option C:
+					<div class="text-center border-warning alert options" id="opt_C_2" onclick="options('opt_C_2', 'Q_No_2', 'C', 1)">
+						blah blah blah
+					</div>
+				</div>
+				<div class="col-md-2"></div>
+				<div class="col-md-5 mb-1 p-0">option D:
+					<div class="text-center border-warning alert options" id="opt_D_2" onclick="options('opt_D_2', 'Q_No_2', 'D', 1)">
+						blah blah blah
+					</div>
+				</div>
+			</div>
+				
+			</div>
+			<hr>
+			<div class="row">
+				<div class="col-md-4 text-center btn btn-dark navigators" onclick="pagination('previous', 1)">previous</div>
+				<div class="col-md-4 text-center"><p class="pt-2">page 2 of 5</p></div>
+				<div class="col-md-4 text-center btn btn-dark navigators" onclick="pagination('next', 1)">next</div>
+			</div>
+			<hr>
+			<div class="text-center">
+				<div class="btn-group">
+					<div class="btn btn-warning" onclick="quick_jump(1)">1</div>
+					<div class="btn btn-warning active" onclick="quick_jump(2)">2</div>
+					<div class="btn btn-warning" onclick="quick_jump(3)">3</div>
+					<div class="btn btn-warning" onclick="quick_jump(4)">4</div>
+					<div class="btn btn-warning" onclick="quick_jump(5)">5</div>
+				</div>
+			</div>
+		</div>
+		<div class="jumbotron mt-3 pt-4 question" id="question-3" style="display: none">
+			<div>
+				<p class="text-center alert alert-dark d-question">
+					<b><u>Question No.3</u></b>
+				</p>
+				<p>
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				</p>
+			</div>
+			<hr>
+			<div>
+			<div class="row">
+				<div class="col-md-5 mb-1 p-0">option A:
+					<div class="text-center border-warning alert options" id="opt_A_3" onclick="options('opt_A_3', 'Q_No_3', 'A', 2)">
+						blah blah blah
+					</div>
+				</div>
+				<div class="col-md-2"></div>
+				<div class="col-md-5 mb-1 p-0">option B:
+					<div class="text-center border-warning alert options" id="opt_B_3" onclick="options('opt_B_3', 'Q_No_3', 'B', 2)">
+						blah blah blah
+					</div>
+				</div>
+				<div class="col-md-5 mb-1 p-0">option C:
+					<div class="text-center border-warning alert options" id="opt_C_3" onclick="options('opt_C_3', 'Q_No_3', 'C', 2)">
+						blah blah blah
+					</div>
+				</div>
+				<div class="col-md-2"></div>
+				<div class="col-md-5 mb-1 p-0">option D:
+					<div class="text-center border-warning alert options" id="opt_D_3" onclick="options('opt_D_3', 'Q_No_3', 'D', 2)">
+						blah blah blah
+					</div>
+				</div>
+			</div>
+				
+			</div>
+			<hr>
+			<div class="row">
+				<div class="col-md-4 text-center btn btn-dark navigators" onclick="pagination('previous', 2)">previous</div>
+				<div class="col-md-4 text-center"><p class="pt-2">page 3 of 5</p></div>
+				<div class="col-md-4 text-center btn btn-dark navigators" onclick="pagination('next', 2)">next</div>
+			</div>
+			<hr>
+			<div class="text-center">
+				<div class="btn-group">
+					<div class="btn btn-warning" onclick="quick_jump(1)">1</div>
+					<div class="btn btn-warning" onclick="quick_jump(2)">2</div>
+					<div class="btn btn-warning active" onclick="quick_jump(3)">3</div>
+					<div class="btn btn-warning" onclick="quick_jump(4)">4</div>
+					<div class="btn btn-warning" onclick="quick_jump(5)">5</div>
+				</div>
+			</div>
+		</div>
+		<div class="jumbotron mt-3 pt-4 question" id="question-4" style="display: none">
+			<div>
+				<p class="text-center alert alert-dark d-question">
+					<b><u>Question No.4</u></b>
+				</p>
+				<p>
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				</p>
+			</div>
+			<hr>
+			<div>
+			<div class="row">
+				<div class="col-md-5 mb-1 p-0">option A:
+					<div class="text-center border-warning alert options" id="opt_A_4" onclick="options('opt_A_4', 'Q_No_4', 'A', 3)">
+						blah blah blah
+					</div>
+				</div>
+				<div class="col-md-2"></div>
+				<div class="col-md-5 mb-1 p-0">option B:
+					<div class="text-center border-warning alert options" id="opt_B_4" onclick="options('opt_B_4', 'Q_No_4', 'B', 3)">
+						blah blah blah
+					</div>
+				</div>
+				<div class="col-md-5 mb-1 p-0">option C:
+					<div class="text-center border-warning alert options" id="opt_C_4" onclick="options('opt_C_4', 'Q_No_4', 'C', 3)">
+						blah blah blah
+					</div>
+				</div>
+				<div class="col-md-2"></div>
+				<div class="col-md-5 mb-1 p-0">option D:
+					<div class="text-center border-warning alert options" id="opt_D_4" onclick="options('opt_D_4', 'Q_No_4', 'D', 3)">
+						blah blah blah
+					</div>
+				</div>
+			</div>
+				
+			</div>
+			<hr>
+			<div class="row">
+				<div class="col-md-4 text-center btn btn-dark navigators" onclick="pagination('previous', 3)">previous</div>
+				<div class="col-md-4 text-center"><p class="pt-2">page 4 of 5</p></div>
+				<div class="col-md-4 text-center btn btn-dark navigators" onclick="pagination('next', 3)">next</div>
+			</div>
+			<hr>
+			<div class="text-center">
+				<div class="btn-group">
+					<div class="btn btn-warning" onclick="quick_jump(1)">1</div>
+					<div class="btn btn-warning" onclick="quick_jump(2)">2</div>
+					<div class="btn btn-warning" onclick="quick_jump(3)">3</div>
+					<div class="btn btn-warning active" onclick="quick_jump(4)">4</div>
+					<div class="btn btn-warning" onclick="quick_jump(5)">5</div>
+				</div>
+			</div>
+		</div>
+		<div class="jumbotron mt-3 pt-4 question" id="question-5" style="display: none">
+			<div>
+				<p class="text-center alert alert-dark d-question">
+					<b><u>Question No.5</u></b>
+				</p>
+				<p>
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				</p>
+			</div>
+			<hr>
+			<div>
+			<div class="row">
+				<div class="col-md-5 mb-1 p-0">option A:
+					<div class="text-center border-warning alert options" id="opt_A_5" onclick="options('opt_A_5', 'Q_No_5', 'A', 4)">
+						blah blah blah
+					</div>
+				</div>
+				<div class="col-md-2"></div>
+				<div class="col-md-5 mb-1 p-0">option B:
+					<div class="text-center border-warning alert options" id="opt_B_5" onclick="options('opt_B_5', 'Q_No_5', 'B', 4)">
+						blah blah blah
+					</div>
+				</div>
+				<div class="col-md-5 mb-1 p-0">option C:
+					<div class="text-center border-warning alert options" id="opt_C_5" onclick="options('opt_C_5', 'Q_No_5', 'C', 4)">
+						blah blah blah
+					</div>
+				</div>
+				<div class="col-md-2"></div>
+				<div class="col-md-5 mb-1 p-0">option D:
+					<div class="text-center border-warning alert options" id="opt_D_5" onclick="options('opt_D_5', 'Q_No_5', 'D', 4)">
+						blah blah blah
+					</div>
+				</div>
+			</div>
+				
+			</div>
+			<hr>
+			<div class="row">
+				<div class="col-md-4 text-center btn btn-dark navigators" onclick="pagination('previous', 4)">previous</div>
+				<div class="col-md-4 text-center"><p class="pt-2">page 5 of 5</p></div>
+				<div class="col-md-4 text-center btn btn-dark navigators" onclick="pagination('next', 4)">next</div>
+			</div>
+			<hr>
+			<div class="text-center">
+				<div class="btn-group">
+					<div class="btn btn-warning" onclick="quick_jump(1)">1</div>
+					<div class="btn btn-warning" onclick="quick_jump(2)">2</div>
+					<div class="btn btn-warning" onclick="quick_jump(3)">3</div>
+					<div class="btn btn-warning" onclick="quick_jump(4)">4</div>
+					<div class="btn btn-warning active" onclick="quick_jump(5)">5</div>
+				</div>
+			</div>
+			<div class="text-center mt-3">
+				<div>
+					<button class="btn btn-success w-75" data-toggle="modal" data-target=".logout">Are you done, Click to submit</button>
+				</div>
+			</div>
+		</div>	
+	</div> -->
+	<div class="modal fade bd-example-modal-lg logout" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content padding-50 modal-logout text-center">
+            <p>
+              Are you sure you want to <span style="color: lightgreen"><span class="fa fa-sign-out"></span>Submit?</span>
+            </p>
+            <div class="row">
+              <a href="javascript:void(0)" class="btn btn-success col-md-5">Yes</a>
+              <span class="col-md-2"></span>
+              <button class="btn btn-warning col-md-5" data-dismiss="modal" aria-label="Close">No</button>
+            </div>
+        </div>
+      </div>
+    </div>
+  {% else %}
+<p>Welcome {{ name }} go and login</p>
+	
+	<a href="{% url 'login' %}">login</a>
+
+{% endif %}
+	<script>
+		var Total_questions = document.getElementsByClassName('options');
+		var buttons = [];
+		var value_loop = 0;
+
+		for (i = 0; i < Total_questions.length / 4; i++){
+			holder = [];
+			for (j = 0; j < 4; j++){
+				holder.push(Total_questions[j + value_loop].id);
+			}
+			buttons[i] = holder;
+			value_loop = value_loop + 4;
+		}
+		var option_selected = {};
+		var page = 0;
+		var Question_page = document.getElementsByClassName("question");
+
+		function options(val, Q_No, opt, number){
+			unselected = []
+			choice = document.getElementById(val);
+			for (i = 0; i <= buttons[number].length - 1; i++) {
+				if (buttons[number][i] == val){
+					continue;
+				}
+				else {
+					unselected.push(buttons[number][i]);
+				}
+			}
+			for (i = 0; i < unselected.length; i++){
+				if (document.getElementById(unselected[i]).classList.length > 0){
+					document.getElementById(unselected[i]).classList.remove('select-opt');
+				}
+			}
+			choice.classList.add("select-opt");
+			option_selected[Q_No] = opt;
+			/*console.log(option_selected)*/
+		}
+
+		function quick_jump(val){
+			val = val - 1;
+			for (i = 0; i < Question_page.length; i++) {
+				if (val == i){
+					Question_page[val].style.display = 'block';
+					page = val;
+				}
+				else{
+					Question_page[i].style.display = 'none';
+				}
+			}
+		}
+		function pagination(page_nav, page_on){
+			if (page_nav == "next"){
+				if (page < Question_page.length - 1){
+					Question_page[page].style.display = 'none';
+					Question_page[page + 1].style.display = 'block';
+					page++;
+				}
+			}
+			else {
+				if (page !== 0){
+					Question_page[page].style.display = 'none';
+					Question_page[page - 1].style.display = 'block';
+					page--;	
+				}
+			}
+		}
+
+	</script>
+	<script type="text/javascript" src="{% static 'js/jquery-3.2.1.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
+{% endblock %}

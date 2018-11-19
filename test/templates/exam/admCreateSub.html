@@ -1,0 +1,27 @@
+{% extends '../general/base.html' %}
+
+{% block title %}Exam Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+
+ <h4>Add subject</h4>
+<form accept="/crateSubject/" method="POST">
+	{% csrf_token %}
+	<input type="text" name="name" placeholder="Subject Name"><br>
+	<input type="text" name="code" placeholder="Subject Code"><br>
+	<select name="subject_term">
+		{% for term in terms %}
+		<option value="{{ term.id }}">{{ term.name }}</option>
+		{% endfor %}
+	</select><br>
+	<select name="category">
+		{% for cat in cats %}
+		<option value="{{ cat.id }}">{{ cat.name }}</option>
+		{% endfor %}
+	</select><br>
+	<input type="submit" value="Send">
+</form>
+{% endif %}
+
+{% endblock %}
